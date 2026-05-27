@@ -4,7 +4,7 @@ const experiences = [
   {
     title: "QA Specialist",
     company: "Instinct Innovations",
-    period: "2022 - Present",
+    period: "2024 - Present",
     description: [
       "Led the development of end-to-end test automation framework using Playwright and TypeScript",
       "Reduced regression testing time by 70% through parallel test execution strategies",
@@ -19,7 +19,7 @@ const experiences = [
   {
     title: "AV Programmer ",
     company: "All-wave AV System Pvt Ltd.",
-    period: "2020 - 2022",
+    period: "2023 - 2024",
     description: [
       " Configured and tested AV control systems, conferencing solutions, and DSP integrations for enterprise environments.",
       " Programmed and configured AV system integrations across Crestron, Extron, Biamp Tesira, and Zoom Rooms,supporting deployment and implementation across client environments.",
