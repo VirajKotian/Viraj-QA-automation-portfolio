@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Mail, Terminal, TestTube2 } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Mail, Terminal, TestTube2, Bug, Shield, Zap } from "lucide-react"
+import { FloatingTechIcons } from "./icons/floating-tech-icons"
 
 export function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center pt-20 px-6 relative">
+    <section className="min-h-screen flex items-center justify-center pt-20 px-6 relative overflow-hidden">
+      <FloatingTechIcons />
       <div className="container mx-auto relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main hero card with glass effect */}
@@ -65,7 +67,7 @@ export function Hero() {
 
               <div className="flex items-center justify-center gap-6">
                 <a 
-                  href="https://github.com" 
+                  href="https://github.com/VirajKotian" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full glass-warm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all icon-glow"
@@ -74,7 +76,7 @@ export function Hero() {
                   <Github size={20} />
                 </a>
                 <a 
-                  href="https://linkedin.com" 
+                  href="https://www.linkedin.com/in/viraj-kotian-0310b0247" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full glass-warm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all icon-glow"
@@ -83,7 +85,7 @@ export function Hero() {
                   <Linkedin size={20} />
                 </a>
                 <a 
-                  href="mailto:your.email@example.com"
+                  href="mailto:virajkotian01@gmail.com"
                   className="w-10 h-10 rounded-full glass-warm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all icon-glow"
                   aria-label="Email"
                 >

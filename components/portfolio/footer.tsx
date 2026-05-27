@@ -18,7 +18,7 @@ export function Footer() {
 
           <div className="flex items-center gap-3">
             <a 
-              href="https://github.com" 
+              href="https://github.com/VirajKotian" 
               target="_blank" 
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/20 transition-all"
@@ -27,7 +27,7 @@ export function Footer() {
               <Github size={16} />
             </a>
             <a 
-              href="https://linkedin.com" 
+              href="https://www.linkedin.com/in/viraj-kotian-0310b0247" 
               target="_blank" 
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/20 transition-all"
@@ -36,7 +36,7 @@ export function Footer() {
               <Linkedin size={16} />
             </a>
             <a 
-              href="mailto:your.email@example.com"
+              href="mailto:virajkotian01@gmail.com"
               className="w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/20 transition-all"
               aria-label="Email"
             >

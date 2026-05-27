@@ -1,5 +1,28 @@
-import { ExternalLink, Github, Folder, Sparkles } from "lucide-react"
+"use client"
+
+import { useState, useEffect } from "react"
+import { ExternalLink, Github, Folder, Sparkles, BarChart3, CheckCircle2, XCircle, Clock, Zap, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { PlaywrightIcon, SeleniumIcon, JenkinsIcon, CypressIcon, DockerIcon, PostmanIcon, PythonIcon, TypeScriptIcon, JiraIcon, NodeJSIcon } from "./icons/tech-icons"
+
+const techIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  playwright: PlaywrightIcon,
+  selenium: SeleniumIcon,
+  jenkins: JenkinsIcon,
+  cypress: CypressIcon,
+  docker: DockerIcon,
+  postman: PostmanIcon,
+  python: PythonIcon,
+  typescript: TypeScriptIcon,
+  jira: JiraIcon,
+  nodejs: NodeJSIcon,
+  "node.js": NodeJSIcon,
+}
+
+const getTechIcon = (tech: string) => {
+  const key = tech.toLowerCase().replace(/\s+/g, "")
+  return techIconMap[key] || null
+}
 
 const projects = [
   {
@@ -16,6 +39,7 @@ const projects = [
     github: "#",
     demo: "#",
     featured: true,
+    stats: { tests: 450, passed: 446, failed: 2, skipped: 2, coverage: 99.2 },
   },
   {
     title: "PharmacyPro – Enterprise Inventory & Billing Management System",
@@ -30,8 +54,68 @@ const projects = [
     tech: ["Playwright", "Functional Testing", "Regression Testing", "API Testing", "Jira", "Inventory Workflows"],
     github: "#",
     demo: "#",
+    stats: { tests: 320, passed: 315, failed: 3, skipped: 2, coverage: 95.0 },
   },
 ]
+
+function TestStatsBar({ stats }: { stats: { tests: number; passed: number; failed: number; skipped: number; coverage: number } }) {
+  const [animatedPassed, setAnimatedPassed] = useState(0)
+  const passRate = Math.round((stats.passed / stats.tests) * 100)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimatedPassed(stats.passed), 500)
+    return () => clearTimeout(timer)
+  }, [stats.passed])
+
+  return (
+    <div className="mt-4 pt-4 border-t border-primary/10">
+      <div className="flex items-center gap-2 mb-3">
+        <BarChart3 className="w-3.5 h-3.5 text-primary" />
+        <span className="text-xs text-muted-foreground font-mono">Test Execution Summary</span>
+      </div>
+      <div className="grid grid-cols-4 gap-2">
+        <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/30">
+          <div className="flex items-center gap-1 text-emerald-400">
+            <CheckCircle2 className="w-3 h-3" />
+            <span className="text-xs font-bold font-mono">{animatedPassed}</span>
+          </div>
+          <span className="text-[9px] text-muted-foreground mt-0.5">Passed</span>
+        </div>
+        <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/30">
+          <div className="flex items-center gap-1 text-red-400">
+            <XCircle className="w-3 h-3" />
+            <span className="text-xs font-bold font-mono">{stats.failed}</span>
+          </div>
+          <span className="text-[9px] text-muted-foreground mt-0.5">Failed</span>
+        </div>
+        <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/30">
+          <div className="flex items-center gap-1 text-yellow-400">
+            <Clock className="w-3 h-3" />
+            <span className="text-xs font-bold font-mono">{stats.skipped}</span>
+          </div>
+          <span className="text-[9px] text-muted-foreground mt-0.5">Skipped</span>
+        </div>
+        <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/30">
+          <div className="flex items-center gap-1 text-blue-400">
+            <Zap className="w-3 h-3" />
+            <span className="text-xs font-bold font-mono">{stats.coverage}%</span>
+          </div>
+          <span className="text-[9px] text-muted-foreground mt-0.5">Coverage</span>
+        </div>
+      </div>
+      <div className="mt-2 h-1.5 bg-secondary/50 rounded-full overflow-hidden">
+        <div 
+          className="h-full rounded-full transition-all duration-1000"
+          style={{ 
+            width: `${passRate}%`,
+            background: `linear-gradient(90deg, #22c55e, #16a34a)`,
+            boxShadow: '0 0 8px rgba(34, 197, 94, 0.4)',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
 
 export function Projects() {
   return (
@@ -43,7 +127,7 @@ export function Projects() {
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-4 animate-pulse-glow" />
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A selection of testing frameworks and automation projects I&apos;ve built 
+            A selection of testing frameworks and automation projects I've built 
             to solve real-world quality assurance challenges.
           </p>
         </div>
@@ -95,15 +179,22 @@ export function Projects() {
                 </ul>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((tech, techIndex) => (
-                  <span 
-                    key={techIndex}
-                    className="px-3 py-1 text-xs font-mono bg-secondary/50 text-primary rounded-full hover:bg-primary/20 transition-colors badge-glow"
-                  >
-                    {tech}
-                  </span>
-                ))}
+              {/* Test Stats Dashboard */}
+              {project.stats && <TestStatsBar stats={project.stats} />}
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                {project.tech.map((tech, techIndex) => {
+                  const TechIcon = getTechIcon(tech)
+                  return (
+                    <span 
+                      key={techIndex}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono bg-secondary/50 text-primary rounded-full hover:bg-primary/20 transition-all badge-glow"
+                    >
+                      {TechIcon && <TechIcon className="w-3.5 h-3.5" />}
+                      {tech}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           ))}

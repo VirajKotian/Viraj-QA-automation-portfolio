@@ -1,7 +1,67 @@
-import { Mail, MapPin, Linkedin, Github, Send, MessageSquare } from "lucide-react"
+"use client"
+
+import React, { useState, FormEvent } from "react"
+import { Mail, MapPin, Linkedin, Github, Send, MessageSquare, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+type FormState = "idle" | "submitting" | "success" | "error"
+
+
 export function Contact() {
+  const [formState, setFormState] = useState<FormState>("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage("Please fill in all fields.")
+      setFormState("error")
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage("Please enter a valid email address.")
+      setFormState("error")
+      return
+    }
+
+    setFormState("submitting")
+    setErrorMessage("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setFormState("success")
+        setFormData({ name: "", email: "", message: "" })
+        setTimeout(() => setFormState("idle"), 5000)
+      } else {
+        setErrorMessage(result.message || "Something went wrong.")
+        setFormState("error")
+      }
+    } catch {
+      setErrorMessage("Network error. Please try again later.")
+      setFormState("error")
+    }
+  }
+
   return (
     <section id="contact" className="py-16 px-6 relative">
       <div className="container mx-auto max-w-4xl relative z-10">
@@ -11,7 +71,7 @@ export function Contact() {
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-4 animate-pulse-glow" />
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Hi, I&apos;m Viraj Kotian. I&apos;m always open to discussing new opportunities, interesting projects, 
+            Hi, I'm Viraj Kotian. I'm always open to discussing new opportunities, interesting projects, 
             or just having a chat about QA and automation.
           </p>
         </div>
@@ -93,49 +153,89 @@ export function Contact() {
               </h3>
             </div>
             
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">
-                  Name
+                  Name *
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="Your name"
+                  disabled={formState === "submitting"}
+                  required
                 />
               </div>
               
               <div>
                 <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">
-                  Email
+                  Email *
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="your.email@example.com"
+                  disabled={formState === "submitting"}
+                  required
                 />
               </div>
               
               <div>
                 <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">
-                  Message
+                  Message *
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
                   placeholder="Your message..."
+                  disabled={formState === "submitting"}
+                  required
                 />
               </div>
 
-              <Button type="submit" className="w-full glow-btn">
-                <Send className="mr-2 h-4 w-4" />
-                Send Message
+              {/* Status Messages */}
+              {formState === "error" && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {formState === "success" && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>Message sent successfully! I'll get back to you soon.</span>
+                </div>
+              )}
+
+              <Button 
+                type="submit" 
+                className="w-full glow-btn"
+                disabled={formState === "submitting"}
+              >
+                {formState === "submitting" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-4 w-4" />
+                    Send Message
+                  </>
+                )}
               </Button>
             </form>
           </div>

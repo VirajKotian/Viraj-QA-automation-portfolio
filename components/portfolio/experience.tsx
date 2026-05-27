@@ -1,4 +1,7 @@
-import { Building2, Calendar, Briefcase } from "lucide-react"
+"use client"
+
+import { Building2, Calendar, Briefcase, Code2, TestTube2, GitBranch, Terminal, Star } from "lucide-react"
+import { PlaywrightIcon, SeleniumIcon, JenkinsIcon, CypressIcon, DockerIcon, PostmanIcon, PythonIcon, TypeScriptIcon, JiraIcon, GitHubActionsIcon } from "./icons/tech-icons"
 
 const experiences = [
   {
@@ -15,6 +18,12 @@ const experiences = [
       "Mentored junior QA engineers and established testing best practices across teams",
       "Integrated automated tests into CI/CD pipeline with GitHub Actions",
     ],
+    tools: [
+      { name: "Playwright", Icon: PlaywrightIcon, color: "#2EAD33" },
+      { name: "TypeScript", Icon: TypeScriptIcon, color: "#3178C6" },
+      { name: "Postman", Icon: PostmanIcon, color: "#FF6C37" },
+      { name: "GitHub Actions", Icon: GitHubActionsIcon, color: "#2088FF" },
+    ],
   },
   {
     title: "AV Programmer ",
@@ -24,10 +33,13 @@ const experiences = [
       " Configured and tested AV control systems, conferencing solutions, and DSP integrations for enterprise environments.",
       " Programmed and configured AV system integrations across Crestron, Extron, Biamp Tesira, and Zoom Rooms,supporting deployment and implementation across client environments.",
       "Implemented mobile test automation for iOS and Android using Appium",
-
+    ],
+    tools: [
+      { name: "Python", Icon: PythonIcon, color: "#3776AB" },
+      { name: "Jenkins", Icon: JenkinsIcon, color: "#D24939" },
+      { name: "Docker", Icon: DockerIcon, color: "#2496ED" },
     ],
   },
-
 ]
 
 export function Experience() {
@@ -53,13 +65,25 @@ export function Experience() {
                   index % 2 === 0 ? "md:flex-row-reverse" : ""
                 }`}
               >
-                {/* Timeline dot */}
-                <div className="absolute left-6 md:left-1/2 w-3 h-3 bg-primary rounded-full md:-translate-x-1/2 -translate-x-1/2 mt-8 ring-4 ring-background animate-pulse" />
+                {/* Timeline dot with animated ring */}
+                <div className="absolute left-6 md:left-1/2 w-5 h-5 bg-primary rounded-full md:-translate-x-1/2 -translate-x-1/2 mt-8 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-background rounded-full animate-pulse" />
+                  <div className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
+                </div>
 
                 <div className="md:w-1/2" />
                 
-                <div className="md:w-1/2 pl-12 md:pl-0">
-                  <div className="glass-warm rounded-xl p-6 hover:border-primary/50 transition-all duration-300 group card-hover">
+                <div className="md:w-1/2 pl-14 md:pl-0">
+                  <div className="glass-warm rounded-xl p-6 hover:border-primary/50 transition-all duration-300 group card-hover relative overflow-hidden">
+                    {/* Top tech bar */}
+                    <div className="flex items-center gap-1.5 mb-4 pb-3 border-b border-primary/10">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+                      <div className="flex-1" />
+                      <Terminal className="w-3 h-3 text-muted-foreground/40" />
+                    </div>
+
                     <div className="flex items-center gap-2 text-primary mb-2">
                       <Calendar className="w-4 h-4" />
                       <span className="text-sm font-medium">{exp.period}</span>
@@ -69,16 +93,37 @@ export function Experience() {
                       {exp.title}
                     </h3>
                     
-                    <div className="flex items-center gap-2 text-muted-foreground mb-4">
+                    <div className="flex items-center gap-2 text-muted-foreground mb-3">
                       <Building2 className="w-4 h-4" />
                       <span>{exp.company}</span>
+                    </div>
+
+                    {/* Tech tool chips */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {exp.tools.map((tool, i) => {
+                        const Icon = tool.Icon
+                        return (
+                          <div 
+                            key={i}
+                            className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono"
+                            style={{ 
+                              backgroundColor: `${tool.color}20`,
+                              color: tool.color,
+                              border: `1px solid ${tool.color}30`,
+                            }}
+                          >
+                            {Icon && <Icon className="w-3 h-3" />}
+                            {tool.name}
+                          </div>
+                        )
+                      })}
                     </div>
 
                     <ul className="space-y-2">
                       {exp.description.map((item, itemIndex) => (
                         <li key={itemIndex} className="text-sm text-muted-foreground flex items-start gap-2">
                           <span className="text-primary mt-1.5 shrink-0">
-                            <Briefcase className="w-3 h-3" />
+                            <Star className="w-3 h-3" />
                           </span>
                           {item}
                         </li>
