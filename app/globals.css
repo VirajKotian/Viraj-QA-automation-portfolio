@@ -143,13 +143,7 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    cursor: none;
   }
-}
-
-/* Custom cursor */
-* {
-  cursor: none !important;
 }
 
 .custom-cursor {
