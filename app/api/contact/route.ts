@@ -43,11 +43,13 @@ export async function POST(request: NextRequest) {
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: Number(process.env.MAIL_PORT) || 587,
-      secure: process.env.MAIL_SECURE === "true",
-      requireTLS: true,
+      secure: false, // false for port 587, true for port 465
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false, // Allow self-signed certificates
       },
     })
 
@@ -94,8 +96,27 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error("Contact form error:", error)
+    
+    // Extract error message for better debugging
+    let errorMessage = "Failed to send message."
+    if (error instanceof Error) {
+      console.error("Error details:", error.message)
+      console.error("Error stack:", error.stack)
+      
+      // Provide specific error messages based on common issues
+      if (error.message.includes("Authentication required")) {
+        errorMessage = "SMTP authentication failed. Please check your Gmail App Password configuration."
+      } else if (error.message.includes("ETIMEDOUT") || error.message.includes("timeout")) {
+        errorMessage = "Connection timed out. Please check your network or SMTP settings."
+      } else if (error.message.includes("self-signed certificate")) {
+        errorMessage = "SSL certificate error. Check your TLS settings."
+      } else {
+        errorMessage = `Failed to send: ${error.message}`
+      }
+    }
+    
     return NextResponse.json(
-      { success: false, message: "Failed to send message. Please try again later or email me directly at virajkotian01@gmail.com." },
+      { success: false, message: errorMessage + " Please try again later or email me directly at virajkotian01@gmail.com." },
       { status: 500 }
     )
   }

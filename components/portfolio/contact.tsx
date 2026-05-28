@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 
 type FormState = "idle" | "submitting" | "success" | "error"
 
-
 export function Contact() {
   const [formState, setFormState] = useState<FormState>("idle")
   const [errorMessage, setErrorMessage] = useState("")
@@ -23,9 +22,12 @@ export function Contact() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     
+    console.log("Form submitted with data:", formData)
+    
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setErrorMessage("Please fill in all fields.")
       setFormState("error")
+      console.log("Validation failed: missing fields")
       return
     }
 
@@ -33,30 +35,40 @@ export function Contact() {
     if (!emailRegex.test(formData.email)) {
       setErrorMessage("Please enter a valid email address.")
       setFormState("error")
+      console.log("Validation failed: invalid email")
       return
     }
 
     setFormState("submitting")
     setErrorMessage("")
+    console.log("Sending form data to API...")
 
     try {
+      console.log("Fetching /api/contact with:", JSON.stringify(formData))
+      
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
 
+      console.log("API response status:", response.status)
+      
       const result = await response.json()
+      console.log("API response:", result)
 
       if (result.success) {
         setFormState("success")
         setFormData({ name: "", email: "", message: "" })
+        console.log("Form submitted successfully!")
         setTimeout(() => setFormState("idle"), 5000)
       } else {
         setErrorMessage(result.message || "Something went wrong.")
         setFormState("error")
+        console.log("Form submission failed:", result.message)
       }
-    } catch {
+    } catch (error) {
+      console.error("Network error during form submission:", error)
       setErrorMessage("Network error. Please try again later.")
       setFormState("error")
     }
@@ -79,7 +91,7 @@ export function Contact() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Contact Info */}
           <div className="space-y-4">
-            <div className="glass-warm rounded-xl p-6 card-hover">
+            <div className="glass-warm rounded-xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center icon-glow">
                   <MessageSquare className="w-5 h-5 text-primary" />
@@ -143,7 +155,7 @@ export function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="glass-warm rounded-xl p-6 card-hover">
+          <div className="glass-warm rounded-xl p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center icon-glow">
                 <Send className="w-5 h-5 text-primary" />
