@@ -229,6 +229,56 @@ export function GalaxyBackground() {
         }
       })
 
+      // Moon
+      const moonX = canvas.width * 0.92
+      const moonY = canvas.height * 0.2
+      const moonRadius = 50
+
+      // Moon glow
+      const moonGlow = ctx.createRadialGradient(
+        moonX, moonY, moonRadius * 0.8,
+        moonX, moonY, moonRadius * 2
+      )
+      moonGlow.addColorStop(0, 'rgba(200, 220, 255, 0.1)')
+      moonGlow.addColorStop(1, 'rgba(100, 150, 255, 0)')
+      ctx.fillStyle = moonGlow
+      ctx.beginPath()
+      ctx.arc(moonX, moonY, moonRadius * 2, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Moon body
+      const moonBody = ctx.createRadialGradient(
+        moonX - moonRadius * 0.3, moonY - moonRadius * 0.3, 0,
+        moonX, moonY, moonRadius
+      )
+      moonBody.addColorStop(0, 'rgba(240, 245, 255, 0.9)')
+      moonBody.addColorStop(0.6, 'rgba(200, 220, 240, 0.85)')
+      moonBody.addColorStop(1, 'rgba(150, 180, 220, 0.8)')
+      ctx.fillStyle = moonBody
+      ctx.beginPath()
+      ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Moon shadow
+      const moonShadow = ctx.createRadialGradient(
+        moonX + moonRadius * 0.4, moonY + moonRadius * 0.4, 0,
+        moonX, moonY, moonRadius * 1.1
+      )
+      moonShadow.addColorStop(0, 'rgba(30, 40, 80, 0)')
+      moonShadow.addColorStop(0.7, 'rgba(30, 40, 80, 0.08)')
+      moonShadow.addColorStop(1, 'rgba(20, 30, 60, 0.15)')
+      ctx.fillStyle = moonShadow
+      ctx.beginPath()
+      ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Moon rim
+      ctx.strokeStyle = 'rgba(200, 220, 255, 0.3)'
+      ctx.lineWidth = 1.5
+      ctx.beginPath()
+      ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2)
+      ctx.stroke()
+
       // Cursor trail effect
       trailRef.current.forEach((point, i) => {
         point.alpha -= 0.05
