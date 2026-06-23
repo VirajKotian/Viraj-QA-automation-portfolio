@@ -26,13 +26,12 @@ const experiences = [
     ],
   },
   {
-    title: "AV Programmer ",
+    title: "QA Analyst",
     company: "All-wave AV System Pvt Ltd.",
     period: "2023 - 2024",
     description: [
-      " Configured and tested AV control systems, conferencing solutions, and DSP integrations for enterprise environments.",
-      " Programmed and configured AV system integrations across Crestron, Extron, Biamp Tesira, and Zoom Rooms,supporting deployment and implementation across client environments.",
-      "Implemented mobile test automation for iOS and Android using Appium",
+      "Performed mobile application testing across Android and iOS devices and executed test scenarios covering device compatibility, UI functionality, and system integrations for AV control and conferencing solutions.",
+      "Utilized Appium to automate repetitive validation workflows, reducing repetitive validation cycles by ˜25% and improving test execution efficiency."
     ],
     tools: [
       { name: "Python", Icon: PythonIcon, color: "#3776AB" },
@@ -59,11 +58,10 @@ export function Experience() {
 
           <div className="space-y-8">
             {experiences.map((exp, index) => (
-              <div 
+              <div
                 key={index}
-                className={`relative flex flex-col md:flex-row gap-8 ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
+                className={`relative flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""
+                  }`}
               >
                 {/* Timeline dot with animated ring */}
                 <div className="absolute left-6 md:left-1/2 w-5 h-5 bg-primary rounded-full md:-translate-x-1/2 -translate-x-1/2 mt-8 flex items-center justify-center">
@@ -72,7 +70,7 @@ export function Experience() {
                 </div>
 
                 <div className="md:w-1/2" />
-                
+
                 <div className="md:w-1/2 pl-14 md:pl-0">
                   <div className="glass-warm rounded-xl p-6 hover:border-primary/50 transition-all duration-300 group card-hover relative overflow-hidden">
                     {/* Top tech bar */}
@@ -88,11 +86,11 @@ export function Experience() {
                       <Calendar className="w-4 h-4" />
                       <span className="text-sm font-medium">{exp.period}</span>
                     </div>
-                    
+
                     <h3 className="text-xl font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
                       {exp.title}
                     </h3>
-                    
+
                     <div className="flex items-center gap-2 text-muted-foreground mb-3">
                       <Building2 className="w-4 h-4" />
                       <span>{exp.company}</span>
@@ -103,10 +101,10 @@ export function Experience() {
                       {exp.tools.map((tool, i) => {
                         const Icon = tool.Icon
                         return (
-                          <div 
+                          <div
                             key={i}
                             className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono"
-                            style={{ 
+                            style={{
                               backgroundColor: `${tool.color}20`,
                               color: tool.color,
                               border: `1px solid ${tool.color}30`,

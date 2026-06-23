@@ -8,6 +8,12 @@ const certifications = [
     details: "25 total hours · 147 lectures · Udemy Certificate",
     url: "https://www.udemy.com/certificate/UC-c038c53d-ed92-43ab-9c49-9691261bf5b9/",
   },
+    {
+    title: "Mobile Automation with Appium 2.0 and WebdriverIO - 2026",
+    date: "08/25/2024",
+    details: "9.5 total hours · 124 lectures · Udemy Certificate",
+    url: "https://www.udemy.com/certificate/UC-be6f3912-be1f-4136-804f-813513bbf590/",
+  },
   {
     title: "Selenium Webdriver with PYTHON from Scratch + Frameworks",
     date: "08/14/2024",
@@ -20,6 +26,7 @@ const certifications = [
     details: "8.5 total hours · 48 lectures · Udemy Certificate",
     url: "https://www.udemy.com/certificate/UC-84b491f5-37b9-4a62-a436-e3b26010848b/",
   },
+
 ]
 
 export function Certifications() {
